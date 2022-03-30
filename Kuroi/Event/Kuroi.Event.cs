@@ -1,12 +1,13 @@
-﻿namespace Kuroi.Event;
+﻿using Kuroi.Event;
+
+namespace Kuroi;
 
 public partial class Kuroi
 {
-	public event EventHandler<GroupMessageEventArgs> GroupMessage;
+    public event EventHandler<GroupMessageEventArgs>? OnGroupMessage;
 
-	public void GroupMessage(GroupMessageEventArgs args)
-	{
-		EventHandler<GroupMessageEventArgs> handler = GroupMessage;
-		handler.Invoke(this, args);
-	}
+    public void HandleGroupMessage(GroupMessageEventArgs args)
+    {
+        OnGroupMessage?.Invoke(this, args);
+    }
 }

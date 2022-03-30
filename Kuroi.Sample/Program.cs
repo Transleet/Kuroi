@@ -12,6 +12,7 @@ public class Program
             .CreateLogger();
         var k = new Kuroi(SessionProtocol.WS, new Uri("ws://127.0.0.1:6700"));
         k.AddLogger(f => f.AddSerilog(logger));
+        k.OnGroupMessage += (s, e) => { Console.WriteLine(e.Message); };
         while (true)
         {
             Console.ReadLine();

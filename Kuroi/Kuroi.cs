@@ -35,7 +35,17 @@ namespace Kuroi
             WebSocketClient.ReconnectTimeout = TimeSpan.FromSeconds(30);
             WebSocketClient.ErrorReconnectTimeout = TimeSpan.FromSeconds(30);
             WebSocketClient.ReconnectionHappened.Subscribe(msg => Logger.LogWarning("Client connecting..."));
-            WebSocketClient.MessageReceived.Subscribe(msg => Logger.LogInformation(msg.Text));
+            WebSocketClient.MessageReceived.Subscribe(msg =>
+            {
+                var action = EventRouter.Route(msg.Text);
+                if (action is null)
+                {
+                    return;
+                }
+
+                Logger.LogDebug(msg.Text);
+                action.Invoke(this);
+            });
             WebSocketClient.Start();
         }
     }
